@@ -7,7 +7,7 @@ It works in two separate data pipelines.
 1.  Batch Sync
 2.  Real time Sync
 
-**Batch Sync:** Batch sync service will sync data with specified date range and series id. It cleans up if any data is persisted within the query range. After that it will fetch data and store in postgresql. 
+**Batch Sync:** Batch sync service will sync data with specified date range and series id. It cleans up if any data is persisted within the query range. After that it will fetch data and store in postgresql. Thus this operation supports both fresh load and incremental load.
 
 **Real time Sync:** The real time service will fetch data (with current date) in every two minutes for realtime sync. 
 
