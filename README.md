@@ -43,9 +43,9 @@ The application will automatically fetch data of current date in every two minut
 
 	$ curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" "http://localhost:8002/fred_data/api/sync/v1/{seriesId}/{realtime_start with yyyy-MM-dd format}/{realtime_end with yyyy-MM-dd format}/{batch etl mode}" 
 	
-`batch etl mode` value will be `daily` or `accumulated`. For `daily` mode, the service will fetch and store data in daily fashion. e.g, For start date 2010-01-01 to end date 2010-01-31, it will fetch data with start and end date value 2010-01-01, then it will fetch data of 2010-01-02 and so on. 
+Value of `batch etl mode` will be `daily` or `accumulated`. For `daily` mode, the service will fetch and store data in daily (iteratively) fashion. e.g, For start date 2010-01-01 to end date 2010-01-31, at first it will fetch data of 2010-01-01, then it will fetch data of 2010-01-02 and so on. 
 
-For `accumulated` mode, the service will fetch data accumulately. e.g, For start date 2010-01-01 to end date 2010-01-31, the service will call fred API with start date start date 2010-01-01 and end date 2010-01-31 and fetch the accumulated records.
+For `accumulated` mode, the service will fetch data accumulately. e.g, For start date 2010-01-01 to end date 2010-01-31, the service will call fred API with start date 2010-01-01 and end date 2010-01-31 and fetch the accumulated records.
 
 `mode` parameter is optional. Default value is `accumulated`.
 
