@@ -88,8 +88,9 @@ public class BaseETLService {
 	}
 
 	@Transactional
-	public Long dateRangeSync(String seriesId, String realtimeStart, String realtimeEnd) {
+	public Long dateRangeSyncInDailyMode(String seriesId, String realtimeStart, String realtimeEnd) {
 		try {
+			log.info("Batch ETL Mode is daily");
 			cleanup(seriesId, realtimeStart, realtimeEnd);
 			LocalDate start = AppDateUtils.getLocalDate(realtimeStart);
 			LocalDate end = AppDateUtils.getLocalDate(realtimeEnd);
@@ -106,32 +107,46 @@ public class BaseETLService {
 		}
 		return 0l;
 	}
+
+	@Transactional
+	public Long dateRangeSyncInAccumulatedMode(String seriesId, String realtimeStart, String realtimeEnd) {
+		try {
+			log.info("Batch ETL Mode is accumulated");
+			cleanup(seriesId, realtimeStart, realtimeEnd);
+			return sync(seriesId, realtimeStart, realtimeEnd);
+		} catch (Exception e) {
+			log.error("Exception in dateRangeETL: series {}, realtime_start {}, realtime_end {}", seriesId,
+					realtimeStart, realtimeEnd, e);
+		}
+		return 0l;
+	}
 	
 	public void cleanup(String seriesId, String realtimeStart, String realtimeEnd) throws ParseException {
 		log.info("Removing records of series {}, realtime_start {}, realtime_end {}", seriesId, realtimeStart,
 				realtimeEnd);
 		storeService.removeObservation(seriesId, realtimeStart, realtimeEnd);
-		lastOffsetRepository.deleteBySeriesIdAndRealtimeStartAndRealtimeEnd(seriesId, realtimeStart, realtimeEnd);
-		log.info("Records have been removed");
+		lastOffsetRepository.deleteBySeriesIdAndRealtimeStartAndRealtimeEnd(seriesId, AppDateUtils.parseDate(realtimeStart), AppDateUtils.parseDate(realtimeEnd));
+		log.info("Records have been removed for series {}, realtime_start {}, realtime_end {}", seriesId, realtimeStart,
+				realtimeEnd);
 	}
 
-	public Long getLastOffset(String seriesId, String realtimeStart, String realtimeEnd) {
+	public Long getLastOffset(String seriesId, String realtimeStart, String realtimeEnd) throws ParseException {
 		Long lastOffset = 0l;
 		ObservationLastOffset lastOffsetObservation = lastOffsetRepository
-				.findBySeriesIdAndRealtimeStartAndRealtimeEnd(seriesId, realtimeStart, realtimeEnd);
+				.findBySeriesIdAndRealtimeStartAndRealtimeEnd(seriesId, AppDateUtils.parseDate(realtimeStart), AppDateUtils.parseDate(realtimeEnd));
 		if (lastOffsetObservation != null) {
 			return lastOffsetObservation.lastOffset;
 		}
 		return lastOffset;
 	}
 
-	public void updateLastOffset(String seriesId, String realtimeStart, String realtimeEnd, Long count) {
+	public void updateLastOffset(String seriesId, String realtimeStart, String realtimeEnd, Long count) throws ParseException {
 		ObservationLastOffset lastOffsetObservation = lastOffsetRepository
-				.findBySeriesIdAndRealtimeStartAndRealtimeEnd(seriesId, realtimeStart, realtimeEnd);
+				.findBySeriesIdAndRealtimeStartAndRealtimeEnd(seriesId, AppDateUtils.parseDate(realtimeStart), AppDateUtils.parseDate(realtimeEnd));
 		if (lastOffsetObservation != null) {
 			lastOffsetObservation.lastOffset += count;
 			lastOffsetRepository.save(lastOffsetObservation);
 		} else
-			lastOffsetRepository.save(new ObservationLastOffset(seriesId, realtimeStart, realtimeEnd, count));
+			lastOffsetRepository.save(new ObservationLastOffset(seriesId, AppDateUtils.parseDate(realtimeStart), AppDateUtils.parseDate(realtimeEnd), count));
 	}
 }

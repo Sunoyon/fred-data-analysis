@@ -1,5 +1,7 @@
 package com.fred.sync.web.domain.db;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,15 +22,15 @@ public class ObservationLastOffset {
 	public String seriesId;
 	
 	@Column(name = "realtime_start")
-	public String realtimeStart;
+	public Date realtimeStart;
 	
 	@Column(name = "realtime_end")
-	public String realtimeEnd;
+	public Date realtimeEnd;
 	
 	@Column(name = "last_offset")
 	public Long lastOffset;
 
-	public ObservationLastOffset(String seriesId, String realtimeStart, String realtimeEnd, Long lastOffset) {
+	public ObservationLastOffset(String seriesId, Date realtimeStart, Date realtimeEnd, Long lastOffset) {
 		this.seriesId = seriesId;
 		this.realtimeStart = realtimeStart;
 		this.realtimeEnd = realtimeEnd;

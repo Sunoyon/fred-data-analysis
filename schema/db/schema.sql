@@ -26,8 +26,8 @@ CREATE TABLE observation_last_offset
 (
 	id bigserial primary key,
 	series_id varchar(20) NOT NULL,
-	realtime_start varchar(11) NOT NULL,
-	realtime_end varchar(11) NOT NULL,
+	realtime_start date NOT NULL,
+	realtime_end date NOT NULL,
 	last_offset BIGINT NOT NULL,
 	unique(series_id, realtime_start, realtime_end)
 );

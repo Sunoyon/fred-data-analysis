@@ -16,6 +16,7 @@ import com.fred.sync.web.domain.response.GenericResponseREST;
 import com.fred.sync.web.handler.FredAnalyticsHandler;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -29,14 +30,15 @@ public class FredAnalyticsController {
 	
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Success", response = GenericResponseREST.class) })
-	@RequestMapping(value = {"/sync/v1/{seriesId}/{realtimeStart}/{realtimeEnd}" }, 
+	@RequestMapping(value = {"/sync/v1/{seriesId}/{realtimeStart}/{realtimeEnd}/{mode}" }, 
 			method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public DeferredResult<ResponseEntity<?>> refreshRules(
 			@PathVariable(name = "seriesId", required = true) String seriesId, 
 			@PathVariable(name = "realtimeStart", required = true) String from,
-			@PathVariable(name = "realtimeEnd", required = true) String to) {
+			@PathVariable(name = "realtimeEnd", required = true) String to,
+			@ApiParam(required = false) @PathVariable(name = "mode", required = false) String mode) {
 		DeferredResult<ResponseEntity<?>> result = new DeferredResult<>();
-		handler.etl(result, seriesId, from, to);
+		handler.etl(result, seriesId, from, to, mode);
 		return result;
 	}
 

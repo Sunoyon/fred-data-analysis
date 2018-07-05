@@ -1,5 +1,7 @@
 package com.fred.sync.etl;
 
+import java.text.ParseException;
+
 import javax.inject.Inject;
 
 import org.junit.Ignore;
@@ -23,7 +25,7 @@ public class BaseETLServiceTest {
 	BaseETLService etl;
 	
 	@Test
-	public void getLastOffset() {
+	public void getLastOffset() throws ParseException {
 		String seriesId = "GDPC1";
 		String realtimeStart = "2018-07-03";
 		String realtimeEnd = "2018-07-03";
@@ -39,7 +41,7 @@ public class BaseETLServiceTest {
 		String seriesId = "UMCSENT";
 		String realtimeStart = "2018-06-01";
 		String realtimeEnd = "2018-06-03";
-		Long dateRangeETL = etl.dateRangeSync(seriesId, realtimeStart, realtimeEnd);
+		Long dateRangeETL = etl.dateRangeSyncInDailyMode(seriesId, realtimeStart, realtimeEnd);
 		log.info("{} records have been stored", dateRangeETL);
 	}
 }

@@ -41,11 +41,18 @@ The following command is to run the application.
 	
 The application will automatically fetch data of current date in every two minutes (which can be configured as well). For batch sync purpose, we have to run following command
 
-	$ curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" "http://localhost:8002/fred_data/api/sync/v1/{seriesId}/{realtime_start with yyyy-MM-dd format}/{realtime_end with yyyy-MM-dd format}" 
+	$ curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" "http://localhost:8002/fred_data/api/sync/v1/{seriesId}/{realtime_start with yyyy-MM-dd format}/{realtime_end with yyyy-MM-dd format}/{batch etl mode}" 
 	
-For example, if we want to sync US Civilian Unemployment Rate (`UNRATE`) data from `realtime_start` Jan 01, 2000 to `realtime_end` Dec 31, 2007 we should run the following command:
+`batch etl mode` value will be `daily` or `accumulated`. For `daily` mode, the service will fetch and store data in daily fashion. e.g, For start date 2010-01-01 to end date 2010-01-31, it will fetch data with start and end date value 2010-01-01, then it will fetch data of 2010-01-02 and so on. 
 
-	$ curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" "http://localhost:8002/fred_data/api/sync/v1/UNRATE/2000-01-01/2017-12-31"
+For `accumulated` mode, the service will fetch data accumulately. e.g, For start date 2010-01-01 to end date 2010-01-31, the service will call fred API with start date start date 2010-01-01 and end date 2010-01-31 and fetch the accumulated records.
+
+`mode` parameter is optional. Default value is `accumulated`.
+
+
+**An example**, if we want to sync US Civilian Unemployment Rate (`UNRATE`) data from `realtime_start` Jan 01, 2000 to `realtime_end` Dec 31, 2007 we should run the following command:
+
+	$ curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" "http://localhost:8002/fred_data/api/sync/v1/UNRATE/2000-01-01/2017-12-31/accumulated"
 
 ## Log
 
