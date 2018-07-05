@@ -50,9 +50,9 @@ For `accumulated` mode, the service will fetch data accumulately. e.g, For start
 `mode` parameter is optional. Default value is `accumulated`.
 
 
-**An example**, if we want to sync US Civilian Unemployment Rate (`UNRATE`) data from `realtime_start` Jan 01, 2000 to `realtime_end` Dec 31, 2007 we should run the following command:
+**An example**, if we want to sync US Civilian Unemployment Rate (`UNRATE`) data from `realtime_start` Jan 01, 1980 to `realtime_end` Dec 31, 2017 we should run the following command:
 
-	$ curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" "http://localhost:8002/fred_data/api/sync/v1/UNRATE/2000-01-01/2017-12-31/accumulated"
+	$ curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" "http://localhost:8002/fred_data/api/sync/v1/UNRATE/1980-01-01/2017-12-31/accumulated"
 
 ## Log
 
