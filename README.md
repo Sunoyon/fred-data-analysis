@@ -60,6 +60,12 @@ Application log can be found in the following path:
 
 	logs/fred-data.log
 
+## Swagger URL
+
+The API is documented by swagger. After running the service, `swagger url` can be found as follows:
+
+	http://localhost:8002/fred_data/api/swagger-ui.html
+
 ## Note 	
 	
 The sync process is transactional. There data will be available after any sync process is completed.
